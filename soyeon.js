@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports.config = {
-  name: "lelouch",
+  name: "soyeon",
   version: "1.0.0",
 };
 
@@ -19,7 +19,7 @@ module.exports.handleEvent = async function ({ api, event }) {
     if (chat === "soyeon start") {
       turnOnChat[event.threadID] = true;
       return api.sendMessage("Chat has been turned on.", event.threadID);
-    } else if (chat === "lelouch stop") {
+    } else if (chat === "soyeon stop") {
       turnOnChat[event.threadID] = false;
       return api.sendMessage("Chat has been turned off.", event.threadID);
     }
