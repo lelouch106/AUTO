@@ -1,63 +1,46 @@
 const axios = require('axios');
 
+const fonts = {
+
+};
+
 module.exports.config = {
-  name: 'lelouch',
-  version: '1.0.0',
-  hasPermission: 0,
-  usePrefix: false,
-  aliases: ['gpt', 'openai'],
-  description: "An AI command powered by GPT-4",
-  usages: "ai [prompt]",
-  credits: 'Developer',
-  cooldowns: 3,
-  dependencies: {
-    "axios": ""
-  }
+    name: 'ae',
+    version: '2',
+    role: 0,
+    hasPrefix: false,
+    aliases: ['anja'],
+    description: "Command for AI-generated responses styled with special fonts.",
+    usage: "ex : ai [prompt]",
+    credits: 'aesther',
+    cooldown: 1,
 };
 
 module.exports.run = async function({ api, event, args }) {
-  const input = args.join(' ');
-
-  if (!input) {
-    return api.sendMessage(`I am... Lelouch! Obey me world! '`, event.threadID, event.messageID);
-  }
-
-  if (input === "clear") {
-    try {
-      await axios.post('https://gaypt4ai.onrender.com/clear', { id: event.senderID });
-      return api.sendMessage("Chat history has been cleared.", event.threadID, event.messageID);
-    } catch (error) {
-      console.error(error);
-      return api.sendMessage('An error occurred while clearing the chat history.', event.threadID, event.messageID);
+    const input = args.join(' ');
+    
+    if (!input) {
+        api.sendMessage('🟡 ᗩEᔕTᕼEᖇ ⚪\n\nฅ^•ﻌ•^ฅ.🔞 .', event.threadID, event.messageID);
+        api.setMessageReaction("🟡", event.messageID, () => {}, true);
+        return;
     }
-  }
-
-
-  let chatInfoMessageID = "";
-  
-  api.sendMessage(``, event.threadID, (error, chatInfo) => {
-    chatInfoMessageID = chatInfo.messageID;
-  },event.messageID);
-
-  try {
-    const url = (event.type === "message_reply" && event.messageReply.attachments[0]?.type === "photo")
-      ? { link: event.messageReply.attachments[0].url }
-      : {};
-
-    const { data } = await axios.post('https://gays-porno-api.onrender.com/chat', {
-      prompt: input,
-      customId: event.senderID,
-      ...url
-    });
-
-    api.editMessage(`${data.message}`, chatInfoMessageID, (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
-
-  } catch (error) {
-    console.error(error);
-    return api.sendMessage('An error occurred while processing your request.', event.threadID, event.messageID);
-  }
+    
+    try {
+        const { data } = await axios.get(`https://api.nyxs.pw/ai/gpt4?text=${encodeURIComponent(input)}`);
+        api.setMessageReaction("⭐", event.messageID, () => {}, true);
+        let response = data.result || 'No response received'; // Handling empty response
+        
+        // Replace characters with stylized characters from fonts
+        response = response.split('').map(char => {
+            return fonts[char.toLowerCase()] || char; // Use lowercase for lookup to match fonts object
+        }).join('');
+        
+        api.sendMessage(`🟡 ᗩEᔕTᕼEᖇ ⚪\n\n${response} ⚪`, event.threadID, event.messageID);
+        api.setMessageReaction("🟠", event.messageID, () => {}, true);
+        
+    } catch (error) {
+        console.error('Error:', error);
+        api.sendMessage('⚠️ Error Loading ⚠️', event.threadID, event.messageID);
+        api.setMessageReaction("🔴", event.messageID, () => {}, true);
+    }
 };
