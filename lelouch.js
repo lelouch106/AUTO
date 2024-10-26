@@ -10,7 +10,7 @@ const fonts = {
 };
 
 module.exports.config = {
-    name: 'ai',
+    name: 'lelouch',
     version: '2',
     role: 0,
     hasPrefix: false,
@@ -25,20 +25,20 @@ module.exports.run = async function({ api, event, args }) {
     const input = args.join(' ');
     
     if (!input) {
-        api.sendMessage('[📑] Lelouch :\n\n(๑•̀ㅁ•́ฅ✧ 𝗬𝗢𝗢 ?? .', event.threadID, event.messageID);
+        api.sendMessage('(๑•̀ㅁ•́ฅ✧ 𝗬𝗢𝗢 ?? .', event.threadID, event.messageID);
         api.setMessageReaction("🌷", event.messageID, () => {}, true);
         return;
     }
     
     try {
-        const RolePlay = "quand tu répond à cette question ajoutes des emojis convenable :\n\n";
+        const RolePlay = "kapag sinagot mo ang tanong na ito magdagdag ng angkop na emojis :\n\n";
         const { data } = await axios.get(`https://api.agatz.xyz/api/gemini?message=${encodeURIComponent(RolePlay + input)}`);
         let response = data.data.answer;
         
         // Replace characters with stylized characters from fonts
         response = response.split('').map(char => fonts[char] || char).join('');
         
-        api.sendMessage({ body: `[📑] Lelouch:\n\n${response}` }, event.threadID, event.messageID);
+        api.sendMessage({ body: `${response}` }, event.threadID, event.messageID);
         api.setMessageReaction("🌸", event.messageID, () => {}, true);
         
     } catch (error) {
