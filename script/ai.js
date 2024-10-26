@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports.config = {
-  name: 'ai',
+  name: 'lelouch',
   version: '1.0.0',
   hasPermission: 0,
   usePrefix: false,
@@ -19,7 +19,7 @@ module.exports.run = async function({ api, event, args }) {
   const input = args.join(' ');
 
   if (!input) {
-    return api.sendMessage(`Please provide a question or statement after 'ai'. For example: 'ai What is the capital of France?'`, event.threadID, event.messageID);
+    return api.sendMessage(`I am... Lelouch! Obey me world! '`, event.threadID, event.messageID);
   }
 
   if (input === "clear") {
@@ -35,7 +35,7 @@ module.exports.run = async function({ api, event, args }) {
 
   let chatInfoMessageID = "";
   
-  api.sendMessage(`🔍 "${input}"`, event.threadID, (error, chatInfo) => {
+  api.sendMessage(``, event.threadID, (error, chatInfo) => {
     chatInfoMessageID = chatInfo.messageID;
   },event.messageID);
 
